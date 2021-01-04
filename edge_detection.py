@@ -40,7 +40,7 @@ net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 # register our new layer with the model
 cv2.dnn_registerLayer("Crop", CropLayer)
 # load the input image and grab its dimensions
-image = cv2.imread('./mango2.jpg')
+image = cv2.imread('./mango6.jpg')
 (H, W) = image.shape[:2]
 # convert the image to grayscale, blur it, and perform Canny
 # edge detection
@@ -80,10 +80,13 @@ mask1 = cv2.bitwise_xor(mask,hed)
 mask1[mask == 0] = 255
 result=cv2.bitwise_and(image,image,mask=mask1)
 result[mask < 255] = 255
-ret, mask2 = cv2.threshold(result, 100, 255, cv2.THRESH_BINARY_INV)
+ret, mask2 = cv2.threshold(result, 100, 255, cv2.THRESH_BINARY)
+ret, mask2 = cv2.threshold(mask2, 100, 255, cv2.THRESH_BINARY_INV)
+mask2=cv2.cvtColor(mask2,cv2.COLOR_RGB2GRAY)
+result[mask2 == 0]=255
 cv2.imshow("Input", image)
 cv2.imshow("Canny", mask)
 cv2.imshow("HED1", hed)
-cv2.imshow("mask", mask1)
+cv2.imshow("mask", mask2)
 cv2.imshow("fin", result)
 cv2.waitKey(0)
