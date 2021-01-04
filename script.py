@@ -3,6 +3,37 @@ import numpy as np
 from matplotlib import pyplot as plt
 import time
 
+
+import cv2
+import numpy as np
+
+image = cv2.imread('mango2.jpg')
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+canny = cv2.Canny(blurred, 30, 150)
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(9, 9))
+dilated = cv2.dilate(canny, kernel)
+result = cv2.bitwise_and(image, image, mask=dilated)
+image = cv2.resize(image, (0, 0), fx = 0.5, fy = 0.5)
+dilated = cv2.resize(dilated, (0, 0), fx = 0.5, fy = 0.5)
+cv2.imshow("Original", image)
+cv2.imshow("Canny", dilated)
+result[np.where((result==[0, 0, 0]).all(axis=2))] = [255, 255, 255]
+result = cv2.resize(result, (0, 0), fx = 0.5, fy = 0.5)
+cv2.imshow("res", result)
+cv2.waitKey(0)
+
+
+
+
+
+
+
+
+
+'''
+
+
 img = cv2.imread('mango1.jpg')
 screen_res = 1280, 720
 scale_width = screen_res[0] / img.shape[1]
@@ -34,8 +65,8 @@ cv2.imshow('Resized Window',dilation)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-
-'''import cv2
+-----------------------------------------------------------------
+import cv2
 import numpy as np
 
 img = cv2.imread('mango3.jpg')
@@ -55,3 +86,6 @@ cv2.imshow('mask', mask)
 cv2.imshow('result', result)
 cv2.waitKey()
 cv2.destroyAllWindows()'''
+
+
+# SECOND WAY
