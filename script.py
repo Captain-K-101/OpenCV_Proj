@@ -17,8 +17,11 @@ cv2.imshow("Original", image)
 cv2.imshow("Canny", closing)
 result[np.where((result==[0, 0, 0]).all(axis=2))] = [255, 255, 255]
 result[dilated == 0] = 255
+result[dilated == 0] = 255
+result[dilated == 255] = 255
 result = cv2.resize(result, (0, 0), fx = 0.5, fy = 0.5)
 gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
+
 blurred = cv2.GaussianBlur(gray, (3, 3),0)
 blurred = cv2.medianBlur(blurred,1)
 gray = cv2.adaptiveThreshold(blurred,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,3)
